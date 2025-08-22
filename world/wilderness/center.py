@@ -73,7 +73,7 @@ DISP_MAP = """
 ≈≈≈≈≈≈≈≈≈·····≈≈≈≈≈≈≈
 ≈≈≈≈≈≈≈···········≈≈≈
 ≈≈≈≈≈≈·············≈≈
-≈≈≈≈≈······▲········≈
+≈≈≈≈≈······x········≈
 ≈≈≈≈≈···············≈
 ≈≈≈≈≈≈·············≈≈
 ≈≈≈≈≈≈≈···········≈≈≈
@@ -112,4 +112,4 @@ class CenterMapProvider(BaseMapProvider):
             room.cmdset.add("world.wilderness.wilderness_cmd.WildernessLeaveCmdSet")
         else:
             room.ndb.dest_room = None
-            room.cmdset.remove("world.wilderness.wilderness_cmd.WildernessLeaveCmd")
+            room.cmdset.remove("world.wilderness.wilderness_cmd.WildernessLeaveCmdSet")
