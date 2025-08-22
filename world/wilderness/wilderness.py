@@ -43,6 +43,7 @@ class WildernessManager:
 
     def _validate_map(self, mapstring: str) -> list[list[str]]:
         lines = [list(line) for line in mapstring.strip().splitlines()]
+        lines = list(reversed(lines))
 
         if len(lines) != self.height:
             raise ValueError(f"Map hat {len(lines)} Zeilen, erwartet: {self.height}")
