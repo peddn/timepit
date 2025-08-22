@@ -96,8 +96,8 @@ class WildernessManager:
 
     def get_map_view(self, cx: int, cy: int, width: int, height: int) -> str:
         """
-        ASCII-Ausschnitt um (cx, cy), '@' markiert die Mittelpunkt-Koordinate.
-        Anzeige: oben = Norden. Intern bleibt (0,0) = links/unten.
+        ASCII-Ausschnitt um (cx, cy), '@' in der Mitte.
+        Ausgabe beginnt Unten-Links: erste Zeile = südlichste Zeile, erstes Zeichen = westlichste Spalte.
         Schneidet an Kartenrändern ab (kein Padding).
         """
         if not self.tiles:
@@ -107,19 +107,18 @@ class WildernessManager:
         start_x, end_x = cx - hw, cx + hw
         start_y, end_y = cy - hh, cy + hh
 
-        # auf Kartengrenzen beschneiden
         x0 = max(0, start_x)
         x1 = min(self.width - 1, end_x)
         y0 = max(0, start_y)
         y1 = min(self.height - 1, end_y)
 
         lines = []
-        # von oben (Norden, größeres y) nach unten (Süden, kleineres y)
-        for y in range(y1, y0 - 1, -1):
-            row_chars = []
-            # links (Westen, kleineres x) nach rechts (Osten, größeres x)
+        # Von unten (Süden, kleines y) nach oben (Norden, großes y)
+        for y in range(y0, y1 + 1):
+            row = []
+            # Von Westen (kleines x) nach Osten (großes x)
             for x in range(x0, x1 + 1):
-                row_chars.append("@" if (x == cx and y == cy) else self.tiles[y][x].symbol)
-            lines.append("".join(row_chars))
+                row.append("@" if (x == cx and y == cy) else self.tiles[y][x].symbol)
+            lines.append("".join(row))
 
         return "\n".join(lines)
