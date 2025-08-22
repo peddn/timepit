@@ -1,5 +1,8 @@
 # --- Karten: 12 Zeilen × 21 Zeichen ---
 
+from world.wilderness.wilderness import BaseMapProvider, WildernessManager
+
+
 WALK_MAP = """
 xxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxx
