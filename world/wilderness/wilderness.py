@@ -97,58 +97,24 @@ class WildernessManager:
     def get_map_view(self, cx: int, cy: int, width: int, height: int) -> str:
         """
         ASCII-Ausschnitt um (cx, cy), mit '@' in der Mitte.
-        Anzeige: oben = Norden. Intern bleibt y=0 unten.
+        Oben = Norden, unten = Süden.
+        Schneidet an den Kartenrändern einfach ab.
         """
         if not self.tiles:
             raise ValueError("Tiles noch nicht gebaut – rufe build_tiles() auf.")
-        if width <= 0 or height <= 0 or self.width == 0 or self.height == 0:
-            return ""
 
         hw, hh = width // 2, height // 2
-        # sichtfenster auf weltkoordinaten
-        start_x = cx - hw
-        start_y = cy - hh
-        end_x   = cx + (width - 1 - hw)
-        end_y   = cy + (height - 1 - hh)
+        start_x, end_x = cx - hw, cx + hw
+        start_y, end_y = cy - hh, cy + hh
 
-        # sichtfenster ∩ kartengrenzen
-        x0 = max(0, start_x)
-        y0 = max(0, start_y)
-        x1 = min(self.width - 1, end_x)
-        y1 = min(self.height - 1, end_y)
-
-        lines: list[str] = []
-
-        # top-padding (wenn fenster über der karte liegt)
-        top_pad = max(0, end_y - (self.height - 1))
-        if top_pad:
-            lines.extend([" " * width] * top_pad)
-
-        # y von oben (y1) nach unten (y0) → oben = Norden
-        for y in range(y1, y0 - 1, -1):
-            chars: list[str] = []
-
-            # left-padding
-            left_pad = max(0, 0 - start_x)
-            if left_pad:
-                chars.extend([" "] * left_pad)
-
-            for x in range(x0, x1 + 1):
+        lines = []
+        for y in range(min(self.height - 1, end_y), max(0, start_y) - 1, -1):
+            row = []
+            for x in range(max(0, start_x), min(self.width - 1, end_x) + 1):
                 if x == cx and y == cy:
-                    chars.append("@")
+                    row.append("@")
                 else:
-                    chars.append(self.tiles[y][x].symbol)
-
-            # right-padding
-            right_pad = max(0, end_x - (self.width - 1))
-            if right_pad:
-                chars.extend([" "] * right_pad)
-
-            lines.append("".join(chars))
-
-        # bottom-padding (wenn fenster unter die karte ragt)
-        bottom_pad = max(0, 0 - start_y)
-        if bottom_pad:
-            lines.extend([" " * width] * bottom_pad)
+                    row.append(self.tiles[y][x].symbol)
+            lines.append("".join(row))
 
         return "\n".join(lines)
