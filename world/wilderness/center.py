@@ -1,5 +1,3 @@
-import textwrap
-
 from evennia.contrib.grid import wilderness
 
 from world.wilderness.wilderness import BaseMapProvider, WildernessManager

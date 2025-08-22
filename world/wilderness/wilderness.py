@@ -2,56 +2,48 @@ from evennia.contrib.grid.wilderness import WildernessMapProvider
 from .wilderness_tc import BaseWildernessRoom
 
 class BaseMapProvider(WildernessMapProvider):
-    """
-    Eine universelle MapProvider-Basisklasse, die die Room-Typeclass setzt.
-    """
     room_typeclass = BaseWildernessRoom
 
-
 class Tile:
-    """
-    Repräsentiert ein Feld auf der Karte mit allen Infos
-    aus den unterschiedlichen Layern.
-    """
     def __init__(self):
-        self.symbol = " "         # aus display_map
-        self.walkable = False     # aus walkable_map
-        self.description = ""     # aus description_map
+        self.symbol = " "
+        self.walkable = False
+        self.description = ""
 
     def __repr__(self):
         return f"Tile('{self.symbol}', walkable={self.walkable})"
 
-
 class WildernessManager:
     """
-    Verwaltet Karten-Layer und baut daraus eine 2D-Matrix aus Tiles.
+    Reproduziert das bewährte Verhalten deines alten MapContainer:
+    - Mapstrings werden beim Laden ZEILEN-UMGEKEHRT (y=0 ist unten/Süden).
+    - Rendering zeigt oben = Norden (y abwärts iterieren).
     """
 
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
 
-        self.display_map = []
-        self.walkable_map = []
-        self.description_map = []
-        self.tiles = []  # endgültige Tile-Matrix
+        self.display_map: list[list[str]] = []
+        self.walkable_map: list[list[str]] = []
+        self.description_map: list[list[str]] = []
+        self.tiles: list[list[Tile]] = []
 
         self._description_mapping: dict[str, str] = {}
         self._walkable_chars: set[str] = set()
 
-    # ---------------- Hilfsmethode ----------------
+    # ---------------- intern ----------------
 
     def _validate_map(self, mapstring: str) -> list[list[str]]:
         lines = [list(line) for line in mapstring.strip().splitlines()]
-        #lines = list(reversed(lines))
+        # wie im alten MapContainer: invertieren, damit y=0 unten ist
+        lines = list(reversed(lines))
 
         if len(lines) != self.height:
             raise ValueError(f"Map hat {len(lines)} Zeilen, erwartet: {self.height}")
         for i, line in enumerate(lines):
             if len(line) != self.width:
-                raise ValueError(
-                    f"Zeile {i} hat {len(line)} Spalten, erwartet: {self.width}"
-                )
+                raise ValueError(f"Zeile {i} hat {len(line)} Spalten, erwartet: {self.width}")
 
         return lines
 
@@ -79,8 +71,8 @@ class WildernessManager:
             raise ValueError("Keine description_map gesetzt.")
 
         self.tiles = []
-        for y in range(self.height):
-            row = []
+        for y in range(self.height):  # y=0 ist unten, wie Evennia rechnet
+            row: list[Tile] = []
             for x in range(self.width):
                 t = Tile()
                 t.symbol = self.display_map[y][x]
@@ -90,38 +82,71 @@ class WildernessManager:
                 row.append(t)
             self.tiles.append(row)
 
-    # ---------------- Zugriffsmethoden ----------------
+    # ---------------- Zugriff & Rendering ----------------
 
     def get_tile(self, x: int, y: int) -> Tile:
         if not self.tiles:
             raise ValueError("Tiles noch nicht gebaut – rufe build_tiles() auf.")
-        return self.tiles[y][x]
+        return self.tiles[y][x]  # (0,0) unten links
 
     def get_map_view(self, cx: int, cy: int, width: int, height: int) -> str:
         """
-        ASCII-Ausschnitt, (cx, cy) liegt im Zentrum und wird mit '@' markiert.
-        Anzeige: 'oben = Norden', ohne die internen Koordinaten zu verändern.
+        ASCII-Ausschnitt um (cx, cy), mit '@' in der Mitte.
+        Anzeige-Orientierung wie im alten MapContainer:
+        - oben = Norden (wir iterieren y abwärts)
+        - Fenster wird an Mapränder geclamped und mit Leerzeichen gepaddet
         """
         if not self.tiles:
             raise ValueError("Tiles noch nicht gebaut – rufe build_tiles() auf.")
 
-        half_w = width // 2
-        half_h = height // 2
+        if width <= 0 or height <= 0 or self.width == 0 or self.height == 0:
+            return ""
 
-        start_x = cx - half_w
-        start_y = cy - half_h
+        hw, hh = width // 2, height // 2
+        start_x = cx - hw
+        start_y = cy - hh
+        end_x = cx + (width - 1 - hw)
+        end_y = cy + (height - 1 - hh)
 
-        lines = []
-        # WICHTIG: Zeilen von oben nach unten rendern (top -> bottom),
-        # d. h. y abwärts zählen, damit oben = Norden ist.
-        for row in range(start_y + height - 1, start_y - 1, -1):
-            chars = []
-            for col in range(start_x, start_x + width):
-                if row == cy and col == cx:
+        # Clamps für den Teil, der IN der Karte liegt
+        x0 = max(0, start_x)
+        y0 = max(0, start_y)
+        x1 = min(self.width - 1, end_x)
+        y1 = min(self.height - 1, end_y)
+
+        lines: list[str] = []
+
+        # Top-Padding (falls Sichtfenster über Karte hinaus nach Norden geht)
+        top_pad = max(0, end_y - (self.height - 1))
+        if top_pad:
+            lines.extend([" " * width] * top_pad)
+
+        # y von oben (y1) nach unten (y0) – oben = Norden
+        for y in range(y1, y0 - 1, -1):
+            chars: list[str] = []
+
+            # Left-Padding (falls Sichtfenster links neben der Karte beginnt)
+            left_pad = max(0, 0 - start_x)
+            if left_pad:
+                chars.extend([" "] * left_pad)
+
+            # sichtbarer, geclampter Bereich
+            for x in range(x0, x1 + 1):
+                if x == cx and y == cy:
                     chars.append("@")
-                elif 0 <= row < self.height and 0 <= col < self.width:
-                    chars.append(self.tiles[row][col].symbol)
                 else:
-                    chars.append(" ")
+                    chars.append(self.tiles[y][x].symbol)
+
+            # Right-Padding (falls Sichtfenster rechts über die Karte hinausgeht)
+            right_pad = max(0, end_x - (self.width - 1))
+            if right_pad:
+                chars.extend([" "] * right_pad)
+
             lines.append("".join(chars))
+
+        # Bottom-Padding (falls Sichtfenster unter Karte hinaus nach Süden geht)
+        bottom_pad = max(0, 0 - start_y)
+        if bottom_pad:
+            lines.extend([" " * width] * bottom_pad)
+
         return "\n".join(lines)
