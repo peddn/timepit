@@ -104,7 +104,6 @@ class WildernessManager:
         self._desc_mapping: Dict[str, str] = dict(desc_mapping)
 
     # ---------------- Abfragen ----------------
-
     @property
     def width(self) -> int:
         return self._width
@@ -134,7 +133,6 @@ class WildernessManager:
         }
 
     # ---------------- Rendering ----------------
-
     def render_view(self, cx: int, cy: int, width: int, height: int) -> str:
         """
         Spieleransicht: Ausschnitt um (cx,cy), '@' in der Mitte.
