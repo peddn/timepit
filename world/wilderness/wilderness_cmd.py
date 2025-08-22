@@ -59,11 +59,11 @@ class CmdLeaveWilderness(Command):
             caller.msg("Was willst du betreten?")
             return
 
-        if not room.db.dest_room:
+        if not room.ndb.dest_room:
             caller.msg("Kein Zielraum in diesem Raum definiert.")
             return
 
-        dest_room_key = room.db.dest_room
+        dest_room_key = room.ndb.dest_room
 
         if self.target != dest_room_key:
             caller.msg(f"'{self.target}' kannst du nicht betreten.")

@@ -108,6 +108,8 @@ class CenterMapProvider(BaseMapProvider):
         # wenn wir uns an den Koordinaten befinden, an denen ein Ausgang sein soll
         if (x, y) == (11, 6):
             room.ndb.active_desc = room.ndb.active_desc + "\n\nHier kannst du mit 'betrete void' zurück ins Nichts."
+            room.ndb.dest_room = "void"
             room.cmdset.add("world.wilderness.wilderness_cmd.WildernessLeaveCmdSet")
         else:
+            room.ndb.dest_room = None
             room.cmdset.remove("world.wilderness.wilderness_cmd.WildernessLeaveCmd")
