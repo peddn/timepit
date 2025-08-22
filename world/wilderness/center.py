@@ -1,6 +1,7 @@
 import textwrap
 
 from evennia.contrib.grid import wilderness
+
 from world.wilderness.wilderness import BaseMapProvider, WildernessManager
 
 # --- Karten: 12 Zeilen × 21 Zeichen ---
@@ -55,7 +56,6 @@ DESC_MAPPING = {
     "w": "Du läufts durch einen dichten, düsteren Wald.",
     "x": "Du solltest auf keinen Fall hier sein.",
 }
-
 
 class CenterMapProvider(BaseMapProvider):
     def __init__(self):
