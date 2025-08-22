@@ -99,8 +99,8 @@ class WildernessManager:
 
     def get_map_view(self, cx: int, cy: int, width: int, height: int) -> str:
         """
-        Gibt einen Ausschnitt als ASCII-String zurück.
-        Die Koordinate (cx, cy) liegt im Zentrum und wird mit '@' markiert.
+        ASCII-Ausschnitt, (cx, cy) liegt im Zentrum und wird mit '@' markiert.
+        Anzeige: 'oben = Norden', ohne die internen Koordinaten zu verändern.
         """
         if not self.tiles:
             raise ValueError("Tiles noch nicht gebaut – rufe build_tiles() auf.")
@@ -112,15 +112,16 @@ class WildernessManager:
         start_y = cy - half_h
 
         lines = []
-        for row in range(start_y, start_y + height):
+        # WICHTIG: Zeilen von oben nach unten rendern (top -> bottom),
+        # d. h. y abwärts zählen, damit oben = Norden ist.
+        for row in range(start_y + height - 1, start_y - 1, -1):
             chars = []
             for col in range(start_x, start_x + width):
                 if row == cy and col == cx:
-                    # Spielerposition markieren
                     chars.append("@")
                 elif 0 <= row < self.height and 0 <= col < self.width:
                     chars.append(self.tiles[row][col].symbol)
                 else:
-                    chars.append(" ")  # außerhalb der Map
+                    chars.append(" ")
             lines.append("".join(chars))
         return "\n".join(lines)
