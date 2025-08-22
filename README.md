@@ -1,4 +1,4 @@
-# Welcome to Evennia!
+# Welcome to Timepit - a Evennia Mud
 
 This is your game directory, set up to let you start with
 your new game right away. An overview of this directory is found here:
@@ -36,5 +36,3 @@ http://github.com/evennia/evennia/wiki/Tutorials.
 
 Evennia's documentation is here:
 https://github.com/evennia/evennia/wiki.
-
-Enjoy!
