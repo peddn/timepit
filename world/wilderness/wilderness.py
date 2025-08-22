@@ -43,7 +43,7 @@ class WildernessManager:
         damit y=0 unten (Süden) ist – wie in Evennia/Wilderness.
         """
         lines = [list(line) for line in mapstring.strip().splitlines()]
-        #lines = list(reversed(lines))  # wichtig: Süden = y0
+        lines = list(reversed(lines))  # wichtig: Süden = y0
 
         if len(lines) != self.height:
             raise ValueError(f"Map hat {len(lines)} Zeilen, erwartet: {self.height}")
