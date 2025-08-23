@@ -8,6 +8,7 @@ creation commands.
 
 """
 
+import evennia
 from evennia.objects.objects import DefaultCharacter
 
 from .objects import ObjectParent
@@ -23,4 +24,7 @@ class Character(ObjectParent, DefaultCharacter):
 
     """
 
-    pass
+    def at_post_puppet(self, **kwargs):
+        combat_script = evennia.create_script('world.combat.CombatScript')
+        self.scripts.add(combat_script)
+        combat_script.start()
