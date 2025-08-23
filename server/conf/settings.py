@@ -224,7 +224,6 @@ DISCORD_BOT_INTENTS = 105985
 DISCORD_BOT_TOKEN = None
 # The account typeclass which the Evennia-side Discord relay bot will use.
 DISCORD_BOT_CLASS = "evennia.accounts.bots.DiscordBot"
->>>>>>> 42ed9d6 (settings update)
 
 
 ######################################################################
