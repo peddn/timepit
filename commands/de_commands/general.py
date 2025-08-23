@@ -1,6 +1,6 @@
-from evennia.default_cmds import CmdHome
+from evennia import default_cmds
 
-class CmdHomeDE(CmdHome):
+class CmdHomeDE(default_cmds.CmdHome):
     """
     Bewege dich zur dem Ort, den dein Charakter als Zuhause gesetzt hat.
 
