@@ -34,11 +34,10 @@ from evennia.settings_default import *
 # This is the name of your game. Make it catchy!
 SERVERNAME = "timepit"
 
-<<<<<<< HEAD
 # Internationalization
 USE_I18N = True
 LANGUAGE_CODE = 'de-de'
-=======
+
 GAME_SLOGAN = "Deutsches Fantasy MUD"
 
 TIME_ZONE = "Europe/Berlin"
