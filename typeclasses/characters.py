@@ -25,6 +25,6 @@ class Character(ObjectParent, DefaultCharacter):
     """
 
     def at_post_puppet(self, **kwargs):
-        combat_script = evennia.create_script('world.combat.CombatScript')
+        combat_script = evennia.create_script('world.combat.combat.CombatScript')
         self.scripts.add(combat_script)
         combat_script.start()
