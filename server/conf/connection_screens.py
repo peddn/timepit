@@ -25,16 +25,39 @@ from django.conf import settings
 from evennia import utils
 
 CONNECTION_SCREEN = """
-|b==============================================================|n
- Welcome to |g{}|n, version {}!
 
- If you have an existing account, connect to it by typing:
+
+  /###           /                                  ##### ##                  
+ /  ############/ #                              ######  /###     #           
+/     #########  ###                            /#   /  /  ###   ###     #    
+#     /  #        #                            /    /  /    ###   #     ##    
+ ##  /  ##                                         /  /      ##         ##    
+    /  ###      ###   ### /### /###     /##       ## ##      ## ###   ########
+   ##   ##       ###   ##/ ###/ /##  / / ###      ## ##      ##  ### ######## 
+   ##   ##        ##    ##  ###/ ###/ /   ###   /### ##      /    ##    ##    
+   ##   ##        ##    ##   ##   ## ##    ### / ### ##     /     ##    ##    
+   ##   ##        ##    ##   ##   ## ########     ## ######/      ##    ##    
+    ##  ##        ##    ##   ##   ## #######      ## ######       ##    ##    
+     ## #      /  ##    ##   ##   ## ##           ## ##           ##    ##    
+      ###     /   ##    ##   ##   ## ####    /    ## ##           ##    ##    
+       ######/    ### / ###  ###  ### ######/     ## ##           ### / ##    
+         ###       ##/   ###  ###  ### ##### ##   ## ##            ##/   ##   
+                                            ###   #  /                        
+                                             ###    /                         
+                                              #####/                          
+                                                ###                           
+
+|b============================================================================|n
+ Willkommen in der |g{}|n, version {}!
+
+ Wenn Du schon einen Account hast kannst Du Dich mit |wconnect einlogen:
       |wconnect <username> <password>|n
- If you need to create an account, type (without the <>'s):
+Um einen Account zu erstellen, gib dieses Kommando ein (ohne die <>'s):
       |wcreate <username> <password>|n
 
- If you have spaces in your username, enclose it in quotes.
- Enter |whelp|n for more info. |wlook|n will re-show this screen.
-|b==============================================================|n""".format(
+ Wenn Dein Benutzername mit Leerzeichen ist, setze ihn in "Dein Name".
+ |whelp|n für mehr Informationen.
+ |wlook|n siehst Du diese Anzeige erneut.
+|b============================================================================|n""".format(
     settings.SERVERNAME, utils.get_evennia_version("short")
 )
