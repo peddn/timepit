@@ -51,13 +51,13 @@ CONNECTION_SCREEN = """
  Willkommen in der |g{}|n, version {}!
 
  Wenn Du schon einen Account hast kannst Du Dich mit |wconnect einlogen:
-      |wconnect <username> <password>|n
-Um einen Account zu erstellen, gib dieses Kommando ein (ohne die <>'s):
-      |wcreate <username> <password>|n
+      |gconnect <username> <password>|n
+ Um einen Account zu erstellen, gib dieses Kommando ein (ohne die <>'s):
+      |gcreate <username> <password>|n
 
  Wenn Dein Benutzername mit Leerzeichen ist, setze ihn in "Dein Name".
- |whelp|n für mehr Informationen.
- |wlook|n siehst Du diese Anzeige erneut.
+ |ghelp|n für mehr Informationen.
+ |glook|n siehst Du diese Anzeige erneut.
 |b============================================================================|n""".format(
     settings.SERVERNAME, utils.get_evennia_version("short")
 )
