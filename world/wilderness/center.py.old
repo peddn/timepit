@@ -1,5 +1,7 @@
-from typing import Dict
-from .wilderness import BaseMapProvider
+# --- Karten: 12 Zeilen × 21 Zeichen ---
+
+from world.wilderness.wilderness import BaseMapProvider, WildernessManager
+
 
 WALK_MAP = """
 xxxxxxxxxxxxxxxxxxxxx
@@ -46,7 +48,7 @@ xxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxx
 """
 
-DESC_MAPPING: Dict[str, str] = {
+DESC_MAPPING = {
     ".": "Du läufst über eine flache Grasebene.",
     "w": "Du läufst durch einen dichten, düsteren Wald.",
     "x": "Du solltest auf keinen Fall hier sein.",
@@ -54,7 +56,8 @@ DESC_MAPPING: Dict[str, str] = {
 
 class CenterMapProvider(BaseMapProvider):
     def __init__(self):
-        super().__init__(
+        super().__init__()
+        self.manager = WildernessManager(
             width=21,
             height=12,
             display_map=DISP_MAP,
@@ -62,14 +65,22 @@ class CenterMapProvider(BaseMapProvider):
             description_map=DESC_MAP,
             walkable_chars={"."},
             desc_mapping=DESC_MAPPING,
-            view_size=(9, 7),
         )
+
+    def is_valid_coordinates(self, wilderness, coordinates):
+        x, y = coordinates
+        return self.manager.is_valid_coordinates(x, y)
 
     def get_location_name(self, coordinates):
         return "Auf Center"
 
-    def at_prepare_room_extra(self, coordinates, caller, room) -> None:
+    def at_prepare_room(self, coordinates, caller, room):
         x, y = coordinates
+
+        view = self.manager.render_view(cx=x, cy=y, width=9, height=7)
+        desc = self.manager.get_description(x, y) or "Du stehst hier im Nirgendwo."
+        room.ndb.active_desc = f"{desc}\n\n{view}"
+
         if (x, y) == (11, 6):
             room.ndb.active_desc += "\n\nHier kannst du mit 'betrete void' zurück ins Nichts."
             room.ndb.dest_room = "void"
