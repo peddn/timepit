@@ -37,13 +37,11 @@ SERVERNAME = "timepit"
 <<<<<<< HEAD
 # Internationalization
 USE_I18N = True
-LANGUAGE_CODE = 'de'
+LANGUAGE_CODE = 'de-de'
 =======
 GAME_SLOGAN = "Deutsches Fantasy MUD"
 
 TIME_ZONE = "Europe/Berlin"
-
-LANGUAGE_CODE = "de-de"
 
 CONNECTION_SCREEN_MODULE = "server.conf.connection_screens"
 
