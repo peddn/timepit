@@ -16,6 +16,8 @@ xxxxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxxxxx
 """
 
+WALK_CHARS = {"."}
+
 DISP_MAP = """
 ~~~~~~~~~~~~~~~~~~~~~
 ~~~~~~~~~~~~~~~~~~~~~
@@ -59,8 +61,8 @@ class CenterMapProvider(BaseMapProvider):
             height=12,
             display_map=DISP_MAP,
             walkable_map=WALK_MAP,
+            walkable_chars=WALK_CHARS,
             description_map=DESC_MAP,
-            walkable_chars={"."},
             desc_mapping=DESC_MAPPING,
             view_size=(9, 7),
         )

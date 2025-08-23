@@ -34,6 +34,10 @@ from evennia.settings_default import *
 # This is the name of your game. Make it catchy!
 SERVERNAME = "timepit"
 
+# Internationalization
+USE_I18N = True
+LANGUAGE_CODE = 'de'
+
 
 ######################################################################
 # Settings given in secret_settings.py override those in this file.
