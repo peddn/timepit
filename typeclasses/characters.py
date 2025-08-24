@@ -10,7 +10,7 @@ creation commands.
 
 from random import randint
 from typing import TYPE_CHECKING
-import evennia
+from evennia import GLOBAL_SCRIPTS
 from evennia.objects.objects import DefaultCharacter
 from evennia.typeclasses.attributes import AttributeProperty
 
@@ -61,7 +61,8 @@ class TimepitCharacter(Character):
     def at_attacked(self, attacker, **kwargs):
         """Called when beeing attacked and combat starts."""
         if self.auto_retaliate:
-            self.execute_cmd(f"attackiere {attacker}")
+            combat_manager = GLOBAL_SCRIPTS.combat_manager
+            combat_manager.add_fight(self, attacker, is_retaliation=True)
 
     def at_damage(self, damage, attacker=None):
         self.tp -= damage
