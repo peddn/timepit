@@ -1,5 +1,6 @@
+from evennia import search_object
+
 from typeclasses.scripts import Script
-from random import randint
 
 class CombatManager(Script):
     """
@@ -26,6 +27,8 @@ class CombatManager(Script):
 
     # --- Tick ---
     def at_repeat(self, **_):
+        elendil = search_object("Elendil")
+        elendil.msg("TICK from combat_manager")
         for (attacker, defender) in self.db.fights:
             attacker.msg(f"Du greifts {defender.key} an.")
             defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
