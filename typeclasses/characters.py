@@ -58,11 +58,12 @@ class TimepitCharacter(Character):
         self.tp += healed
         self.msg(f"Du hast dich um {healed} geheilt.")
 
-    def at_attacked(self, attacker, **kwargs):
+    def at_attacked(self, attacker, is_retaliation=False):
         """Called when beeing attacked and combat starts."""
-        if self.auto_retaliate:
-            combat_manager = GLOBAL_SCRIPTS.combat_manager
-            combat_manager.add_fight(self, attacker, is_retaliation=True)
+        if not is_retaliation:
+            if self.auto_retaliate:
+                combat_manager = GLOBAL_SCRIPTS.combat_manager
+                combat_manager.add_fight(self, attacker, is_retaliation=True)
 
     def at_damage(self, damage, attacker=None):
         self.tp -= damage

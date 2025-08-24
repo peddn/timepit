@@ -21,8 +21,7 @@ class CombatManager(Script):
     def add_fight(self, attacker, defender, is_retaliation=False):
         self.start()
         self.db.fights[attacker] = defender
-        if not is_retaliation:
-            defender.at_attacked(attacker)
+        defender.at_attacked(attacker, is_retaliation=is_retaliation)
 
     def remove_fight(self, attacker):
         self.db.fights.pop(attacker, None)
