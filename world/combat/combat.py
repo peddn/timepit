@@ -1,6 +1,7 @@
-from evennia import search_object
+from evennia import search_object, create_object
 
 from typeclasses.scripts import Script
+from typeclasses.objects import Object
 
 class CombatManager(Script):
     """
@@ -20,6 +21,7 @@ class CombatManager(Script):
     def add_fight(self, attacker, defender):
         self.start()
         self.db.fights[attacker] = defender
+        defender.at_attacked(attacker)
 
     def remove_fight(self, attacker):
         self.db.fights.pop(attacker, None)
@@ -33,18 +35,24 @@ class CombatManager(Script):
                 attacker.msg(f"{defender} nicht gefunden. Breche Attacke ab.")
                 defender.msg(f"{attacker} hat aufgehört, dich zu attackieren.")
                 return
+
             attacker.msg(f"Du attackierst {defender}.")
-            defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker}.")
+            defender.msg(f"{attacker} attackiert dich.")
             attacker.location.msg_contents(f"{attacker} attackiert {defender}.", exclude=[attacker, defender])
+
             damage = attacker.roll_damage()
             defender.at_damage(damage, attacker)
+
             attacker.msg(f"Du verursachst {damage} Schaden an {defender}")
             defender.msg(f"{attacker} verusacht {damage} an dir.")
             attacker.location.msg_contents(f"{attacker} verursacht {damage} Schaden an {defender}.", exclude=[attacker, defender])
+
             if defender.tp < 0:
                 attacker.msg(f"Du hast {defender} getötet.")
                 attacker.location.msg_contents(f"{attacker} hat {defender} getötet.", exclude=[attacker, defender])
                 defender.at_defeat()
                 self.remove_fight(attacker)
                 if not defender.is_pc:
+                    body = create_object(Object, key=f"Die Leiche von {defender}.", location=defender.location)
+                    body.desc = "Eine übel zugerichtete Leiche."
                     defender.delete()

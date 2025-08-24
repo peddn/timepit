@@ -60,7 +60,8 @@ class TimepitCharacter(Character):
 
     def at_attacked(self, attacker, **kwargs):
         """Called when beeing attacked and combat starts."""
-        pass
+        if self.auto_retaliate:
+            self.execute_cmd(f"attackiere {attacker}")
 
     def at_damage(self, damage, attacker=None):
         self.tp -= damage
