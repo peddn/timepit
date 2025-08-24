@@ -35,8 +35,8 @@ class CmdAttackiere(Command):
             caller.msg(f"Du beginnst {target.key} anzugreifen.")
             target.msg(f"{caller.key} beginnt dich anzugreifen.")
             room.msg(f"{caller.key} beginnt {target.key} anzugreifen.")
-            combat_script = GLOBAL_SCRIPTS.combat_script
-            combat_script.add_fight(caller, target)
+            combat_manager = GLOBAL_SCRIPTS.combat_manager
+            combat_manager.add_fight(caller, target)
 
 class CmdAufgeben(Command):
     """
