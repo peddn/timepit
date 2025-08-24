@@ -17,15 +17,16 @@ class CombatManager(Script):
 
     # --- API ---
     def add_fight(self, attacker, defender):
+        self.start()
         self.db.fights[attacker] = defender
 
     def remove_fight(self, attacker):
         self.db.fights.pop(attacker, None)
+        # TODO: bei null Kämpfen, das script stoppen
 
     # --- Tick ---
     def at_repeat(self, **_):
-        if self.db.fights:
-            for (attacker, defender) in self.db.fights:
-                attacker.msg(f"Du greifts {defender.key} an.")
-                defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
-                attacker.location.msg("{attacker.key} greift {defender.key} an.")
+        for (attacker, defender) in self.db.fights:
+            attacker.msg(f"Du greifts {defender.key} an.")
+            defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
+            attacker.location.msg("{attacker.key} greift {defender.key} an.")
