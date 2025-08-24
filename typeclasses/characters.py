@@ -29,10 +29,10 @@ class Character(ObjectParent, DefaultCharacter):
     pass
 
 
-class TimepitCharacter:
+class TimepitCharacter(Character):
     # Is this a player character?
     is_pc = True
-    
+
     # The strength attribute - effects damage
     strength = AttributeProperty(5, category="stat")
 
