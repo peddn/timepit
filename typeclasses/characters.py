@@ -60,6 +60,7 @@ class TimepitCharacter(Character):
 
     def at_attacked(self, attacker, is_retaliation=False):
         """Called when beeing attacked and combat starts."""
+        self.msg(f"{self} wird vom {attacker} ATTACKIERT! Vergeltung: {is_retaliation}")
         if not is_retaliation:
             if self.auto_retaliate:
                 combat_manager = GLOBAL_SCRIPTS.combat_manager
