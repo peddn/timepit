@@ -1,6 +1,6 @@
 import re
 
-from evennia import CmdSet, search_object, search_script
+from evennia import CmdSet, search_object, GLOBAL_SCRIPTS
 from evennia.contrib.grid import wilderness
 from commands.command import Command
 
@@ -35,7 +35,7 @@ class CmdAttackiere(Command):
             caller.msg(f"Du beginnst {target.key} anzugreifen.")
             target.msg(f"{caller.key} beginnt dich anzugreifen.")
             room.msg(f"{caller.key} beginnt {target.key} anzugreifen.")
-            combat_script = search_script("combat_script")
+            combat_script = GLOBAL_SCRIPTS.combat_script
             combat_script.add_fight(caller, target)
 
 class CmdAufgeben(Command):
