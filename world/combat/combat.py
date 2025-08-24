@@ -19,6 +19,9 @@ class CombatManager(Script):
 
     # --- API ---
     def add_fight(self, attacker, defender, is_retaliation=False):
+        elendil = search_object("Elendil")
+        elendil[0].msg(f"Attacker: {attacker}; Defender: {defender}")
+
         self.start()
         self.db.fights[attacker] = defender
         defender.at_attacked(attacker, is_retaliation=is_retaliation)
