@@ -17,7 +17,8 @@ own cmdsets by inheriting from them or directly from `evennia.CmdSet`.
 from evennia import default_cmds
 
 from commands.de_commands.general import CmdHomeDE
-from commands.de_commands.reports import ReportsCmdSet
+#from commands.de_commands.reports import ReportsCmdSet
+from evennia.contrib.base_systems.ingame_reports import ReportsCmdSet
 
 class CharacterCmdSet(default_cmds.CharacterCmdSet):
     """
