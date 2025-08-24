@@ -29,7 +29,7 @@ class CombatManager(Script):
     def at_repeat(self, **_):
         elendil = search_object("Elendil")
         elendil[0].msg("TICK from combat_manager")
-        for (attacker, defender) in self.db.fights:
+        for attacker, defender in self.db.fights:
             attacker.msg(f"Du greifts {defender.key} an.")
             defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
             attacker.location.msg("{attacker.key} greift {defender.key} an.")
