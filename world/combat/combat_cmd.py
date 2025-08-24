@@ -55,7 +55,7 @@ class CmdAufgeben(Command):
 
         caller.msg(f"Du stoppst deine Attacke.")
         room.msg(f"{caller.key} stoppt seine Attacke.")
-        combat_script = search_script("combat_script")
+        combat_script = GLOBAL_SCRIPTS.combat_script
         combat_script.remove_fight(caller)
 
 class CombatCmdSet(CmdSet):
