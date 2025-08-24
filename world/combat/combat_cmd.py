@@ -34,7 +34,7 @@ class CmdAttackiere(Command):
         else:
             caller.msg(f"Du beginnst {target.key} anzugreifen.")
             target.msg(f"{caller.key} beginnt dich anzugreifen.")
-            room.msg(f"{caller.key} beginnt {target.key} anzugreifen.")
+            room.msg_contents(f"{caller.key} beginnt {target.key} anzugreifen.", exclude=[caller, target])
             combat_manager = GLOBAL_SCRIPTS.combat_manager
             combat_manager.add_fight(caller, target)
 
@@ -53,9 +53,12 @@ class CmdAufgeben(Command):
         caller = self.caller
         room = self.obj
 
-        caller.msg(f"Du stoppst deine Attacke.")
-        room.msg(f"{caller.key} stoppt seine Attacke.")
         combat_manager = GLOBAL_SCRIPTS.combat_manager
+        target = combat_manager.db.fights[caller]
+
+        caller.msg(f"Du hörst auf, {target.key} zu attackieren.")
+        target.msg(f"{caller.key} hört auf, dich zu attackieren.")
+        room.msg_contents(f"{caller.key} hört auf {target.key} zu attackieren.", exclude=[caller, target])
         combat_manager.remove_fight(caller)
 
 class CombatCmdSet(CmdSet):
