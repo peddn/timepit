@@ -46,6 +46,10 @@ CONNECTION_SCREEN_MODULE = "server.conf.connection_screens"
 
 COMMAND_PARSER = "evennia.commands.cmdparser.cmdparser"
 
+
+INGAME_REPORT_STATUS_TAGS = ('in progress', 'rejected', 'completed')
+INGAME_REPORT_TYPES = ('bugs', 'ideas', 'players')
+
 ######################################################################
 # Default command sets and commands
 ######################################################################
