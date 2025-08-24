@@ -16,9 +16,11 @@ own cmdsets by inheriting from them or directly from `evennia.CmdSet`.
 
 from evennia import default_cmds
 
-from commands.de_commands.general import CmdHomeDE
-#from commands.de_commands.reports import ReportsCmdSet
 from evennia.contrib.base_systems.ingame_reports import ReportsCmdSet
+
+from commands.de_commands.general import CmdHomeDE
+
+from world.combat.combat_cmd import CombatCmdSet
 
 class CharacterCmdSet(default_cmds.CharacterCmdSet):
     """
@@ -34,11 +36,12 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         Populates the cmdset
         """
         super().at_cmdset_creation()
-        #
-        # any commands you add below will overload the default ones.
-        #
+        # own, translated versions of default_cmds
         self.remove("home")
         self.add(CmdHomeDE())
+
+        # Combat Command set
+        self.add(CombatCmdSet())
 
 
 class AccountCmdSet(default_cmds.AccountCmdSet):
