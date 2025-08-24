@@ -14,7 +14,7 @@ class CmdAttackiere(Command):
 
     def parse(self):
         targets = re.sub(r"\s+", " ", self.args).strip().split()
-        self.target = targets[0].lower() if targets else None
+        self.target = targets[0] if targets else None
 
     def func(self):
         caller = self.caller
@@ -24,7 +24,10 @@ class CmdAttackiere(Command):
             caller.msg("Wen oder was willst du attakieren?")
             return
 
-        target = caller.search(self.target, candidates=room.contents)
+        for item in caller.location.contents:
+            caller.msg(item.key)
+
+        target = caller.search(self.target.lower(), candidates=caller.location.contents)
 
         if not target:
             caller.msg(f"'{self.target}' gibt es hier wohl nicht. Such dir ein anderes Opfer.")
