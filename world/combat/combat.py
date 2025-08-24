@@ -35,7 +35,7 @@ class CombatManager(Script):
                 return
             attacker.msg(f"Du attackierst {defender.key}.")
             defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
-            attacker.location.msg_contents("{attacker.key} attackiert {defender.key}.", exclude=[attacker, defender])
+            attacker.location.msg_contents(f"{attacker.key} attackiert {defender.key}.", exclude=[attacker, defender])
             damage = attacker.roll_damage()
             defender.at_damage(damage, attacker)
             attacker.msg(f"Du verursachst {damage} Schaden an {defender}")
