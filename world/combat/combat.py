@@ -33,14 +33,18 @@ class CombatManager(Script):
                 attacker.msg(f"{defender} nicht gefunden. Breche Attacke ab.")
                 defender.msg(f"{attacker} hat aufgehört, dich zu attackieren.")
                 return
-            attacker.msg(f"Du attackierst {defender.key}.")
-            defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
-            attacker.location.msg_contents(f"{attacker.key} attackiert {defender.key}.", exclude=[attacker, defender])
+            attacker.msg(f"Du attackierst {defender}.")
+            defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker}.")
+            attacker.location.msg_contents(f"{attacker} attackiert {defender}.", exclude=[attacker, defender])
             damage = attacker.roll_damage()
             defender.at_damage(damage, attacker)
             attacker.msg(f"Du verursachst {damage} Schaden an {defender}")
             defender.msg(f"{attacker} verusacht {damage} an dir.")
             attacker.location.msg_contents(f"{attacker} verursacht {damage} Schaden an {defender}.", exclude=[attacker, defender])
             if defender.tp < 0:
+                attacker.msg(f"Du hast {defender} getötet.")
+                attacker.location.msg_contents(f"{attacker} hat {defender} getötet.")
                 defender.at_defeat()
                 self.remove_fight(attacker)
+                if not defender.is_pc:
+                    defender.delete()
