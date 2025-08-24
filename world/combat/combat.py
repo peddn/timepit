@@ -43,7 +43,7 @@ class CombatManager(Script):
             attacker.location.msg_contents(f"{attacker} verursacht {damage} Schaden an {defender}.", exclude=[attacker, defender])
             if defender.tp < 0:
                 attacker.msg(f"Du hast {defender} getötet.")
-                attacker.location.msg_contents(f"{attacker} hat {defender} getötet.")
+                attacker.location.msg_contents(f"{attacker} hat {defender} getötet.", exclude=[attacker, defender])
                 defender.at_defeat()
                 self.remove_fight(attacker)
                 if not defender.is_pc:
