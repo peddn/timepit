@@ -71,7 +71,8 @@ class TimepitCharacter(Character):
 
     def at_death(self):
         """Called when this thing dies."""
-        pass
+        self.msg(f"Du bist soeben gestorben.")
+
 
 
 class TimepitNPC(TimepitCharacter):

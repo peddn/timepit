@@ -24,9 +24,6 @@ class CmdAttackiere(Command):
             caller.msg("Wen oder was willst du attakieren?")
             return
 
-        for item in caller.location.contents:
-            caller.msg(item.key)
-
         target = caller.search(self.target.lower(), candidates=caller.location.contents)
 
         if not target:
