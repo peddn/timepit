@@ -27,7 +27,7 @@ class CombatManager(Script):
 
     # --- Tick ---
     def at_repeat(self, **_):
-        for attacker, defender in self.db.fights:
+        for attacker, defender in self.db.fights.items():
             attacker.msg(f"Du greifts {defender.key} an.")
             defender.msg(f"Du verteidigts dich gegen eine Attacke von {attacker.key}.")
             attacker.location.msg("{attacker.key} greift {defender.key} an.")
